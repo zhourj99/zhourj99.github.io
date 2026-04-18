@@ -2,10 +2,1165 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>zrj github 网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周周书签收藏</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?fff33d50cef8b9d386a8c31da4723d53";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #1a1a2e;
+        }
+        
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        #video-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: opacity 0.8s ease;
+        }
+        
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(0px);
+            z-index: -1;
+            transition: backdrop-filter 0.5s ease;
+        }
+        
+        body.scrolled .blur-overlay {
+            backdrop-filter: blur(8px);
+        }
+        
+        body.scrolled #video-bg {
+            opacity: 0.5;
+        }
+        
+        .container {
+            max-width: min(1200px, 90vw);
+            margin: 0 auto;
+            position: relative;
+            padding: 20px;
+            padding-top: 60px;
+        }
+        
+        .marquee-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+            padding-left: 100%;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            margin-right: 40px;
+            color: #f5f5f5;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .marquee-link {
+            color: #f5f5f5;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0 15px;
+            position: relative;
+        }
+        
+        .marquee-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+        
+        h1 {
+            margin-bottom: 15px;
+            font-size: clamp(2em, 6vw, 3em);
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            background: linear-gradient(90deg, #ff6b6b, #ffa726, #66bb6a, #42a5f5, #ab47bc);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 8s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: clamp(14px, 3.5vw, 18px);
+            margin-top: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 15px auto;
+            background-image: url('https://mpimg.cn/view.php/f28da3eac8f392e9fa2ba91723b2bf4c.png');
+            background-size: cover;
+            background-position: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        
+        .special-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 25px auto;
+            max-width: 90%;
+        }
+        
+        .special-link {
+            position: relative;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+        
+        .special-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+        
+        .special-link i {
+            margin-right: 6px;
+            font-size: 12px;
+        }
+        
+        .bookmarks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+            gap: 35px;
+            margin-top: 20px;
+        }
+        
+        .bookmark {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+        
+        .bookmark:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .bookmark-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .bookmark-title {
+            color: #ffffff;
+            font-size: 20px;
+            line-height: 1.3;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+            padding: 0 10px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+        }
+        
+        .bookmark-header:hover .bookmark-title {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            color: #a3d9ff;
+        }
+        
+        .bookmark-header.collapsed .bookmark-title {
+            color: #a3d9ff;
+            text-shadow: 0 0 15px rgba(163, 217, 255, 0.6);
+        }
+        
+        .fold-indicator {
+            position: relative;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.5) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            border-radius: 2px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .fold-indicator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.8) 50%, 
+                rgba(255, 255, 255, 0) 100%);
+            animation: shimmer 2.5s infinite;
+        }
+        
+        .bookmark-header:hover .fold-indicator {
+            background: linear-gradient(90deg, 
+                rgba(163, 217, 255, 0) 0%, 
+                rgba(163, 217, 255, 0.7) 50%, 
+                rgba(163, 217, 255, 0) 100%);
+            height: 3px;
+            box-shadow: 0 0 8px rgba(163, 217, 255, 0.3);
+        }
+        
+        .bookmark-header.collapsed .fold-indicator {
+            background: linear-gradient(90deg, 
+                rgba(163, 217, 255, 0) 0%, 
+                rgba(163, 217, 255, 0.9) 50%, 
+                rgba(163, 217, 255, 0) 100%);
+            height: 3px;
+            box-shadow: 0 0 12px rgba(163, 217, 255, 0.5);
+        }
+        
+        .bookmark-header.collapsed .fold-indicator::before {
+            background: linear-gradient(90deg, 
+                rgba(163, 217, 255, 0) 0%, 
+                rgba(163, 217, 255, 1) 50%, 
+                rgba(163, 217, 255, 0) 100%);
+            animation: shimmer-fast 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        @keyframes shimmer-fast {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .fold-status {
+            display: none;
+        }
+        
+        .bookmark-links {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: 10px;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            max-height: none;
+            overflow: visible;
+        }
+        
+        .bookmark-links.collapsed {
+            display: none;
+        }
+        
+        .link-row {
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
+            gap: 8px;
+        }
+        
+        .link-item {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .link-item a {
+            display: block;
+            padding: 12px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+            height: 100%;
+            min-height: 45px;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .link-item a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.4s ease;
+            opacity: 0.8;
+        }
+        
+        .music-player:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .music-player i {
+            font-size: 20px;
+            color: #ffffff;
+        }
+        
+        @media (max-width: 1024px) {
+            .special-links {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+                padding-top: 50px;
+            }
+            
+            .avatar {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .special-links {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                max-width: 95%;
+            }
+            
+            .special-link {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .special-link i {
+                font-size: 11px;
+            }
+            
+            .bookmarks {
+                gap: 25px;
+            }
+            
+            .bookmark {
+                padding: 20px;
+                border-radius: 25px;
+            }
+            
+            .bookmark-title {
+                font-size: 18px;
+            }
+            
+            .link-item a {
+                font-size: 13px;
+                padding: 10px 6px;
+                min-height: 40px;
+            }
+            
+            .marquee-content {
+                font-size: 12px;
+            }
+            
+            .music-player {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .music-player i {
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bookmarks {
+                grid-template-columns: 1fr;
+            }
+            
+            .special-links {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .special-link {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+            
+            .link-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .link-item {
+                margin: 0;
+            }
+            
+            .bookmark-title {
+                font-size: 16px;
+            }
+            
+            .fold-indicator {
+                width: 70%;
+            }
+        }
+    </style>
 </head>
 <body>
- <h1>zrj github 网站</h1>
- <h2>zrj github 网站</h2>
+    <div class="video-container">
+        <video id="video-bg" autoplay muted loop playsinline>
+            <source src="https://txmov2.a.kwimgs.com/upic/2023/10/13/16/BMjAyMzEwMTMxNjU4MTJfMTcyNTc4NzU4N18xMTQ4OTQ2OTgxMzRfMl8z_b_B209e890a596d64fbd174507b758b0815.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <div class="dark-overlay"></div>
+    <div class="blur-overlay"></div>
+    
+    <div class="marquee-container">
+        <div class="marquee">
+            <span class="marquee-content">
+                <a href="https://zhourj99.github.io" class="marquee-link">✈️/不限速不限设备 </a>
+            </span>
+        </div>
+    </div>
+    
+    <audio id="bgMusic" loop>
+        <source src="https://mpimg.cn/view.php/ee87cc895e940ba249c1fe07b03cd548.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-player" id="musicToggle">
+        <i class="fas fa-volume-up"></i>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>周周书签收藏</h1>
+            <div class="avatar"></div>
+            
+            <div class="special-links">
+                <a href="https://zhourj99.github.io" class="special-link"><i class="fab fa-telegram"></i> TG频道[暂无]</a>
+                <a href="https://t.me/+j664EmVv8m0wZGVk" class="special-link"><i class="fab fa-telegram"></i> TG群聊<[暂无]/a>
+                <a href="https://github.com/zhourj99/zhourj99" class="special-link"><i class="fab fa-github"></i> Github仓库</a>
+                <a href="https://github.com/zhourj99/zhourj99" class="special-link"><i class="fab fa-github"></i> 镜像仓库[暂无]</a>
+            </div>
+        </header>
+        
+        <div class="bookmarks">
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">周周公益项目汇总</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">书签收藏夹[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">共享小火箭[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">节点订阅转换[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">Github加速[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">直链托管[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">音乐网站[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">Telegram代理[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">网盘搜索[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">临时邮箱[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">智能Ai[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费节点订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费IPTV订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费TVbox订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费UZ影视订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费Cinetry订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费EchoTV订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">永久免费猫源订阅[暂无]</a></div></div>
+                </div>
+            </div>
+
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">TVbox软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周TVbox永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.qiushui.vip/gj/jiemi">TVbox接口解密</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://lege.totalh.net/TVbox">TVbox接口加密</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://bjq.n13.club">TVbox接口编辑器</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/R6GKck">OK影视-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/9rZZIg">OK影视精简版-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/VOMWUL">FM影视-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/PNDWcr">影视仓-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/QWELFE">影视+[安卓魔改]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/0RZKCD">taka小黑盒-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/gJo3sx">俊于小白盒-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/kRvEI6">MediaMix-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/lYwri5">Jadebox-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/wp1RCz">EasyBox[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/mZxrIK">幽兰4K-内置版-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/rk1Ef0">宝盒-内置版-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/v21mIj">开心-内置版-[安卓+TV]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">IPTV软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周IPTV永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://192.3.127.250">直播源混淆伪装防盗</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.9kds.com/tool/txt">直播源制作编辑</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://k.xzwl.top/zbzh">直播源格式转换-[可一键复制转换后文本]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://yang-1989.eu.org/Conversion.php">直播源格式转换-[订阅可在线转*合并去重]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://taoiptv.com/loding.html">淘IPTV-[酒店源*组播源*生成]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://yang-1989.eu.org">YanG-[综合直播源生成]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://iptv.cqshushu.com/jiekou.php">医工学习日志-[体育直播源生成]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://43.251.226.110:9991/get">某内部群-[最强直播源生成]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://wwda.lanzoug.com/b00ccbned">酷9原版-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://wwda.lanzouu.com/b0ck4joch">酷9魔改-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/68lViA">云影空蒙-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/J6wPum">极致-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/mZm9sK">IPTVPro-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/n50WFq">TiviMate-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/73myfx">LOTUS-[安卓+TV+Win]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/FcMTsEMc">NanoTV-[苹果+苹果TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/zpkYIp"> CharmingPlayer-[Win+Mac]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/BBqXh9"> SrcBox-[Win]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/CGG888/iptvnator/releases"> IPTVnator-[Win+Mac+Linux]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://aptv.wegic.app">APTV-[苹果系列全家桶]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/qx12TP">DIYP影音-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://streamshare.wireway.ch/download/to3j9w01">派大星-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/yP37Cz">易发TV-内置版-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/zp3YTp">直播电视-内置版-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/ADVOU3">元宝TV-内置版-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/G6l7fp">千寻TV-内置版-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/VOEMUL">直播大全-内置版-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/J6o2hm">悠悠电视-内置版-[TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/lY35T5">GeekTV-内置版-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/KrpRiv">VST全聚合-内置版-[安卓+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/R6zqIk">老登三件套-内置版-[TV]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">挂载软件合辑(空壳子)</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://intro.bgp.yt/accounts/regonline">无门槛Emby公益服注册-[二刺螈]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://tv.hohai.eu.org">无门槛Emby公益服注册-[HOHAI]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://codeberg.org/Jsnzkpg/Jsnzkpg/raw/branch/Jsnzkpg/stymei/emby.txt">点击获取Emby免费共享账号</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://codeberg.org/Jsnzkpg/Jsnzkpg/raw/branch/Jsnzkpg/stymei/webdav.txt">点击获取WebDAV免费共享账号</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://qdav.top">夸克网盘挂载WebDAV生成器</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zh.okaapps.com/product/1659622164">VidHub(苹果+安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://capyplayer.feifeiduck.com/zh">卡皮巴拉(苹果+安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/n5qESq">柴柴emby(安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://bmh.163.com">爆米花(苹果+安卓+TV+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.dandanplay.com">弹弹play(苹果+安卓+Win+Mac+Linux)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/y478QNPY">Vidora(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/zcRStRh9">Themby(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://lennaapp.github.io">Lenna(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/YWayHNUf">OtoFlow(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.amcfy.xyz">箭头音乐(苹果+安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/mZprTK">AfuseKt(安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/o2r3uL">Femor(苹果+安卓+TV+x86系统)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/pYvNiN">Yamby(安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/Actrlq/Harflix/releases/download/V1.0.5/Harflix-V1.0.5-unsigned.hap">Harflix(华为鸿蒙)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/jRrlHM">Emfin(TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/o2z3hL">LinPlayer(苹果+安卓+TV+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/pYANhN">tvxemby(安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/yPj7tz">Syncwe(苹果+安卓+Win+Mac)</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">index.js.md5软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周index.js.md5永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/us/app/miraplay/id6749287494?l=zh-Hans-CN">MiraPlay-[苹果]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/thdxEjTZ">JSTV-[苹果]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/qxq0sP">Peekpili-[安卓+苹果+Win]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/wpN1iz">蚂蚁影视-[安卓+苹果+Win+Mac+TV+x86]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/ywzcMKS3">魔力云播-[苹果]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">影视软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周UZ影视永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/mZp9cK">UZ影视(苹果+安卓+TV+Win+Mac+x86)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周Cinetry永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/lYogu5">Cinetry(苹果+安卓+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周EchoTV永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/kRnNs6">EchoTV(苹果+安卓+Win+Mac+Linux)</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">音乐软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://musicfree.catcat.work">MusicFree(安卓+Win)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/c74ee1eeec03d59e4a08360c3fcde387.js">复制MusicFree音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.223210.xyz">Sollin Plarer(苹果+安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/7a5735021ebbad488cc3b127b6edde7a.js">复制Sollin Plarer音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/n5qWUq">歌一刀(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/7a5735021ebbad488cc3b127b6edde7a.js">复制歌一刀音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://down.nigx.cn/files.catbox.moe/yp287x.apk">元力音乐(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://13413.kstore.vip/yuanli/yuanli.json">复制元力音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.likegamex.top/s/ZnmsB">MoBiMusic(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/425df8f035fe6dfa95c88a38ad5d7aaf.js">复制MoBiMusic音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/jRmliM">洛雪音乐(苹果+安卓+Win+Mac+Linux)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/7a5735021ebbad488cc3b127b6edde7a.js">复制洛雪音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/kejichangqing/QingMusic/releases">青听音乐(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://13413.kstore.space/QingMusic/music.json">复制青听音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/Z6BwiV">音悦(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/13167216efb01ab8653e72fd4196d0ec.json">复制音悦音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/gJjGux">Cymusic(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/7a5735021ebbad488cc3b127b6edde7a.js">复制Cymusic音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://ceru.shiqianjiang.cn/#download">澜音(Win+Mac+Linux)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/7a5735021ebbad488cc3b127b6edde7a.js">复制澜音音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/82ZLCZ">音狐(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/6be761f1ec0dae4aef303e0071fba2f5.js">复制音狐音乐源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/73Zrux">EMO音乐(安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://7672.kstore.space/emo/yy.json">复制EMO音乐源</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">漫画软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/Aidoku/Aidoku/releases/download/v0.8/Aidoku.ipa">Aidoku(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://raw.githubusercontent.com/suiyuran/aidoku-zh-sources/refs/heads/main/public/index.min.json">复制Aidoku漫画源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/venera-app/venera/releases/tag/v1.6.2">Venera(苹果+安卓+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://cdn.jsdelivr.net/gh/venera-app/venera-configs@main/index.json">复制Venera漫画源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://lizimh.com">栗子漫画-[内置*苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://komiic.com/mobile">Komiic-[内置*苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://down.nigx.cn/files.catbox.moe/w1zykq.ipa">魔力阅(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gitee.com/heiby/heimoliyuede?_from=gitee_search">复制魔力阅漫画源</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">小说软件合辑{空壳子}</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://www.yckceo.com/yuedu/index/index.html">阅读(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mzrjk.top">阅读书源获取地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/cn/app/id6445861996">亨读(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://raw.githubusercontent.com/xiangduread/xiangdureadshuyuan/refs/heads/main/total.json">复制亨读书源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/o2rBhL">读一刀(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/b04e66704c026a454fa92ea5cff05828.json">复制读一刀书源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/pYvpIN">栖读(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/93d568d90f3121f6322da1281e4e01ef.json">复制栖读书源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/cn/app/%E8%AF%BB%E4%B8%8D%E8%88%8D%E6%89%8B/id1662413517">读不舍手(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://raw.githubusercontent.com/shidahuilang/shuyuan/refs/heads/shuyuan/读不舍手app-大灰狼融合4.0(兼容版).json">复制读不舍手书源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/cn/app/%E5%8D%83%E9%98%85-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%98%85%E8%AF%BB%E4%B8%BB%E9%A2%98/id1665963317">千阅(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://raw.githubusercontent.com/shidahuilang/shuyuan/shuyuan/good.json">复制千阅书源</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/YYfh75TS">书墨(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/f478e6fc6692d0e91fadfcb3ecca32de.json">复制书墨书源</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">Google Play第3方软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/o243cL">Go谷歌安装器-[官方版获取方式]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/pY5NtN">Sup谷歌安装器-[官方版获取方式]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/qx4GTP">Gbox-[强兼容*支持鸿蒙]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/KrxYfv">AuroraStore</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/L9yAhp">uptodown</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/M8z5i0">GithubStore</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/NkApcr">Appteka</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/681lCA">F-Droid</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/XDOACy">Emotn Store-[电视TV端*需要挂梯]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">Telegram第3方软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://streamshare.wireway.ch/download/z7128inw">Telegram Plus-安卓</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/mZ3OsK">NagramXF-安卓</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://nekogram.app">Nekogram-安卓</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://telega.me/download">Telega(苹果+安卓+电脑)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/e1v9O7jC">Turrit-苹果</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/3TUwXHbH">Swiftgram-苹果</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/Telegram/Telegram_v12.5.2_MOD.apk">Telegram高级版-安卓</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">YouTube第3方软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/yuliskov/SmartTube/releases/download/30.82s/SmartTube_stable_30.82_arm64-v8a.apk">SmartTube安卓端</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/yuliskov/SmartTube/releases/download/30.82s/SmartTube_stable_30.82_armeabi-v7a.apk">SmartTube电视TV端</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/reisxd/TizenTubeCobalt/releases/download/v1.0.8/cobalt-arm64.apk">TizenTube安卓端</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/reisxd/TizenTubeCobalt/releases/download/v1.0.8/cobalt-arm.apk">TizenTube电视TV端</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://streamshare.wireway.ch/download/33xediis">YouTube电视TV端免框架版</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://streamshare.wireway.ch/download/gxnqjp4q">YouTube电视TV端亚马逊提取版</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://tubex.app">TubeX(苹果+安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/libre-tube/LibreTube/releases/download/v0.30.0/app-release.apk">LibreTube(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gh-proxy.org/https://github.com/TeamNewPipe/NewPipe/releases/download/v0.28.3/NewPipe_v0.28.3.apk">NewPipe(安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/cn/app/fytube-%E6%B2%A1%E6%9C%89%E5%B9%BF%E5%91%8A%E7%9A%84-youtube/id1610668825">FyTube(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/cn/app/pretub-no-ads-in-video/id1603057438">PreTub(苹果)</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">代理工具软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://zhourj99.github.io">复制周周翻墙永久订阅[暂无]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/down.php/7dc7cf48b9aaa9149d5a0ed82652583f.apk">订阅助手-[TV端快捷导入订阅链接]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zh.momobaby.org">订阅转换-[全程关闭翻墙转换和导入]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/mihomo-party-org/clash-party/releases">clash-party下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://flclash.cc/download.html">FlClash下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://clashmi.app/download">ClashMi下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://clashverge.net/downloads">Clash Verge下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/MetaCubeX/ClashMetaForAndroid/releases">ClashMeta下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/xiaobaigroup/ClashBox/releases">ClashBox下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://clashmac.app">ClashMac下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/getsurfboard/surfboard/releases">surfboard下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://v2rayn.2dust.link">v2rayN下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://v2rayng.2dust.link">v2rayNG下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/SagerNet/sing-box/releases">singbox下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://karing.app/download">Karing下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://hiddify.com">Hiddify下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/MatsuriDayo/NekoBoxForAndroid/releases">NekoBox下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/appshubcc/Bettbox/releases">Bettbox下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/dyhkwong/Exclave/releases">Exclave下载地址</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://stymei.github.io">ios小火箭下载地址</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">免费VPN软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://shr1.bj1ch.com/?mid=1018&invite_code=ZW5HA">白鲸(苹果+安卓+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.downloadnth.com/download.html">nthLink(苹果+安卓+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://shadowsharing.com">shadowShare(苹果+安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pawdollvpn.com">Pawdoll(苹果+安卓)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://geph.io">迷雾通(苹果+安卓+Win+Mac+Linux)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://xiashinet.com/shadowsocks/index.html">夏时(苹果+安卓+Win+Mac)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/Ao0G8UZD">Fair Plus(苹果)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://github.com/GFW-knocker/MahsaNG/releases">MahsaNG(安卓+TV)</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://streamshare.wireway.ch/download/11tc6ruq">耄耋加速器(安卓)</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">免费破解软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/YEPnhJ">TikTok-[安卓+苹果+TV]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/Z6QRtV">酷我音乐盒-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/Spotify/Spotify_v9.1.32.2083_MOD.apk">Spotify-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/Netmirror/modNetMirror.apk">奈飞-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/pixiv/Pixiv_v6.176.0.apk">pixiv-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/Instagram/Instagram_v422.0.0.35.64.apk">Instagram-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/AdGuard%20VPN/AdGuard_VPN_v2.16.40.apk">AdGuardVPN-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/Vpnify/vpnify-Premium-%20v2.2.8%20x.apk">Vpnify-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/1wAPCD">IDM-[Win]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.quark.cn/s/28537d0f7e3a">雷电模拟器-[Win]</a></div></div>
+                  <div class="link-row"><div class="link-item"><a href="https://files.modyolo.com/GTA%20San%20Andreas/Grand_Theft_Auto_San_Andreas_%20v2.11.311%20_MOD.apk">GTA圣安地列斯-[安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.quark.cn/s/7e9f9e534b2c">GTA圣安地列斯-[苹果]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.quark.cn/s/d8d826d57996">GTA罪恶都市-[苹果]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.quark.cn/s/199de74234e4">GTA全套-[安卓直装]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.baidu.com/s/1j7xdwbrHzTKH0GdY6Eibyw?pwd=32c9">GTA-[Win]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">免费Vod软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://19q.cc/api.php/provide/vod">复制Vod通用采集源[黄]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://by.bfzyapi.com/api.php/provide/vod">复制Vod通用采集源[绿]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://danboxingqiu.cn">蛋播星球-[苹果+安卓+Win+Mac]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dogpan.com/s/9rMZFg">Selene-[苹果+安卓+Win+Mac]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://testflight.apple.com/join/q9yUcV8n">记账伴侣-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://apps.apple.com/cn/app/%E5%B0%8F%E4%BC%81%E9%B9%85/id6748056455">小企鹅-[苹果]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">免费观影软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://gznetflix.com/?gzinviteCode=01PMO4">瓜子影视-[苹果+安卓+Win+Mac]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.jianpian15.com">荐片-[苹果+安卓+TV+Win+Mac]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://247kan.com">247看-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://ys123.app">小苹果影视-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://a123tv.com">123TV-[网页在线]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.yingshidaquantv.com">影视大全-[网页在线]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.flixflop.com">飞流视频-[网页在线]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://gaze.run">注视影视-[网页在线]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">免费看球软件合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://tyzb.live">178直播-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://n.vip">说球帝-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://kq8.fun">看球吧-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://bszb8.cc">比赛直播-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://fszb.com">飞速直播-[苹果+安卓]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://kafeizhibo.com">咖啡直播-[网页在线]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://m.jrkan.com">JRKAN-[网页在线]</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://zhibo1.cc">壹直播-[网页在线]</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">油猴脚本网站合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://greasyfork.org/zh-CN">Greasy Fork</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://sleazyfork.org/zh-CN">Sleazy Fork</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://scriptcat.org/zh-CN">ScriptCat</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.userscript.zone">Userscript</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.zhaojiaoben.cn">找脚本</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">直链托管网站合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://mpimg.cn/upload.php">不限格式,最大100mb</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://pan.baidu.re/upload.php">不限格式,最大50mb</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="http://pan.daliutv.top:2025/upload.php"> 不限格式,最大30mb</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://wp.v6x8.com/upload.php">不限格式,最大500mb</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.panurl.cn/upload.php">不限格式,最大10G,需登录</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">破墙代理网站合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://ces.ljf521202.top">免费代理加速1</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://dir.fengsaner.xyz">免费代理加速2</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://seep.eu.org">免费代理加速3</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://down.nigx.cn">免费代理加速4</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://proxy.edgeone.pp.ua">免费代理加速5</a></div></div>
+                </div>
+            </div>
+
+            <div class="bookmark">
+                <div class="bookmark-header" onclick="toggleBookmark(this)">
+                    <div class="bookmark-title">视频解析网站合辑</div>
+                    <div class="fold-indicator"></div>
+                    <div class="fold-status"></div>
+                </div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://9xbuddy.in/zh">国外主流软件平台解析</a></div></div>
+                <div class="bookmark-links">
+                    <div class="link-row"><div class="link-item"><a href="https://www.v2ob.com">国内短视频去水印解析</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://am1907.top">爱优腾芒vip解析-直接搜索</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.nuliya.top/vip"> 爱优腾芒vip解析-粘贴链接</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://www.dlbunny.com">TikTok和抖音专用-去水印解析+下载</a></div></div>
+                    <div class="link-row"><div class="link-item"><a href="https://twitterxz.com">推特X专用-去水印解析+下载</a></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicToggle = document.getElementById('musicToggle');
+            const musicIcon = musicToggle.querySelector('i');
+            const bgMusic = document.getElementById('bgMusic');
+            
+            function tryAutoPlay() {
+                bgMusic.play().then(() => {
+                    musicIcon.classList.replace('fa-music', 'fa-volume-up');
+                    localStorage.setItem('music', 'on');
+                }).catch(e => {
+                    document.addEventListener('click', function firstInteraction() {
+                        bgMusic.play();
+                        musicIcon.classList.replace('fa-music', 'fa-volume-up');
+                        localStorage.setItem('music', 'on');
+                        document.removeEventListener('click', firstInteraction);
+                    }, { once: true });
+                });
+            }
+            
+            const savedMusic = localStorage.getItem('music');
+            if (savedMusic !== 'off') {
+                tryAutoPlay();
+            } else {
+                musicIcon.classList.replace('fa-volume-up', 'fa-music');
+            }
+            
+            musicToggle.addEventListener('click', function() {
+                if (bgMusic.paused) {
+                    bgMusic.play();
+                    musicIcon.classList.replace('fa-music', 'fa-volume-up');
+                    localStorage.setItem('music', 'on');
+                } else {
+                    bgMusic.pause();
+                    musicIcon.classList.replace('fa-volume-up', 'fa-music');
+                    localStorage.setItem('music', 'off');
+                }
+            });
+            
+            const marquee = document.querySelector('.marquee');
+            const marqueeContent = document.querySelector('.marquee-content');
+            const clone = marqueeContent.cloneNode(true);
+            marquee.appendChild(clone);
+            
+            initializeBookmarks();
+        });
+        
+        function toggleBookmark(headerElement) {
+            const bookmark = headerElement.closest('.bookmark');
+            const links = bookmark.querySelector('.bookmark-links');
+            
+            headerElement.classList.toggle('collapsed');
+            links.classList.toggle('collapsed');
+            
+            const bookmarkId = Array.from(bookmark.parentElement.children).indexOf(bookmark);
+            const isCollapsed = headerElement.classList.contains('collapsed');
+            saveBookmarkState(bookmarkId, isCollapsed);
+        }
+
+        function initializeBookmarks() {
+            const bookmarks = document.querySelectorAll('.bookmark');
+            
+            bookmarks.forEach((bookmark, index) => {
+                const isCollapsed = localStorage.getItem(`bookmark_${index}`) === 'true' || 
+                                   localStorage.getItem(`bookmark_${index}`) === null;
+                
+                const header = bookmark.querySelector('.bookmark-header');
+                const links = bookmark.querySelector('.bookmark-links');
+                
+                if (isCollapsed) {
+                    header.classList.add('collapsed');
+                    links.classList.add('collapsed');
+                }
+                
+                if (localStorage.getItem(`bookmark_${index}`) === null) {
+                    localStorage.setItem(`bookmark_${index}`, 'true');
+                }
+            });
+        }
+        
+        function saveBookmarkState(index, isCollapsed) {
+            localStorage.setItem(`bookmark_${index}`, isCollapsed);
+        }
+    </script>
 </body>
 </html>
